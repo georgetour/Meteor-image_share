@@ -1,0 +1,89 @@
+<head>
+  <title>image_share</title>
+</head>
+
+<body>
+
+
+<nav class="navbar navbar-default navbar-fixed-top container">{{> loginButtons}}</nav>
+
+  <div class="container">
+  <h1>Welcome to coursera {{username}} !</h1>
+
+      {{>image_add_form }}
+
+      {{> images}}
+  </div>
+</body>
+
+
+<template name="image_add_form">
+    <div class="modal fade" id="image-form-modal">
+
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="modal-title">Upload Your Image!</div>
+
+                </div>
+
+            <div class="modal-body">
+               <form class="js-add-image" style="padding: 35px">
+                <div>Give URL</div>
+               <input  type="text" name="img_src">
+                <div>Description(not required)</div>
+               <input type="text" name="img_alt">
+
+               <button class="btn btn-success">Save</button>
+                   <br>
+               </form>
+            </div>
+              <div class="modal-footer">
+                <button class="btn btn-warning" data-dismiss="modal">Cancel</button>
+              </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+</template>
+
+<template name="images">
+
+    <!-- Only if currentUser is logged in you will see the button-->
+    {{#if currentUser}}
+    <button class="btn btn-success js-show-image-form">Add Image</button>
+        {{/if}}
+    <!--End if currentUser-->
+    <p>
+    {{#if filtering_images}}
+        <div>Showing Images uploaded by: {{getFilterUser}}</div>
+
+        <a href="#" class="js-remove-filter" >Show all images</a>
+        {{/if}}
+    </p>
+    <div class="row">
+        <br/>
+  {{#each images}}
+  <div class="col-xs-12 col-md-3 col-lg-3" id="{{_id}}">
+  	<div class="thumbnail">
+
+        <!--We are putting the js in the class so we know that will target it from javascript-->
+  	 	<img class="js-image thumbnail-img" src="{{img_src}}" alt="{{img_alt}}"/>
+  			
+  		<div class="caption">
+        	<h3>Rating:{{rating}}</h3>
+        	<p>{{img_alt}}</p>
+            <p>
+                Created by:<a href="#" class="js-image-user-filter">{{getUser createdBy}}</a>
+            </p>
+            <p >{{>starsRating mutable=true class="js-stars-image" data-id=_id rating=rating}}</p>
+            <button class="js-del-image btn btn-warning">Delete</button>
+     	</div>
+     </div>
+    </div> <!-- / col -->
+  {{/each}}
+</div> <!-- / row -->
+  </template>
